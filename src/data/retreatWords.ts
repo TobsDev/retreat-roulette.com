@@ -1,0 +1,53 @@
+export const retreatWords = {
+  ACTIVITY: [
+    'yoga',
+    'meditation',
+    'breathwork',
+    'dance',
+    'tantra',
+    'sound healing',
+    'ecstatic',
+    'kundalini',
+    'shamanic',
+    'nudist',
+  ],
+  THEME: [
+    'spiritual',
+    'conscious',
+    'sacred',
+    'divine',
+    'cosmic',
+    'quantum',
+    'holistic',
+    'embodied',
+    'authentic',
+    'wild',
+  ],
+  FOCUS: [
+    'healing',
+    'awakening',
+    'transformation',
+    'alignment',
+    'integration',
+    'activation',
+    'manifestation',
+    'empowerment',
+    'liberation',
+    'convergence',
+  ],
+  SETTING: [
+    'ceremony',
+    'journey',
+    'immersion',
+    'intensive',
+    'workshop',
+    'circle',
+    'gathering',
+    'sanctuary',
+    'temple',
+    'portal',
+  ],
+} as const;
+
+export type WordCategory = keyof typeof retreatWords;
+export type RetreatWord = typeof retreatWords[WordCategory][number]; 
