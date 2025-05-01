@@ -23,7 +23,7 @@ vi.mock('../data/retreatWords', () => ({
 }));
 
 describe('RetreatRoulette', () => {
-  const mockStore: Partial<RetreatStore> = {
+  const mockStore: Required<RetreatStore> = {
     reels: [
       { isSpinning: false, selectedWordIndex: 0 },
       { isSpinning: false, selectedWordIndex: 0 },
@@ -36,6 +36,7 @@ describe('RetreatRoulette', () => {
     spin: vi.fn(),
     stopSpinning: vi.fn(),
     saveCombination: vi.fn(),
+    deleteCombination: vi.fn(),
     toggleSound: vi.fn().mockImplementation(() => {
       soundModule.playSound('CLICK', true);
     }),
