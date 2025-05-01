@@ -1,84 +1,73 @@
-export type WordCategory = keyof typeof retreatWords;
-export type RetreatWord = typeof retreatWords[WordCategory][number];
+import { RetreatWord } from '../types/retreat';
+import { v4 as uuidv4 } from 'uuid';
 
-export const retreatWords = {
-  ACTIVITY: [
-    'nudist',
-    'crypto',
-    'ecstatic',
-    'polyamorous',
-    'silent',
-    'shamanic',
-    'burning-man',
-    'nomadic',
-    'ancestral',
-    'transcendental',
-    'celibate',
-    'kundalini',
-    'ayahuasca',
-    'high-performance',
-    'hedonistic',
-    'quantum',
-    'tantric',
-    'primal',
-  ],
-  THEME: [
-    'timeline-jumping',
-    'consciousness-hacking',
-    'chakra-aligning',
-    'manifestation',
-    'sacred-geometry',
-    'plant-medicine',
-    'sound-bathing',
-    'energy-clearing',
-    'astral-projection',
-    'past-life',
-    'DNA-activation',
-    'crystal-coding',
-    'womb-wisdom',
-    'shadow-work',
-    'light-language',
-    'cosmic-downloading',
-  ],
-  FOCUS: [
-    'awakening',
-    'transformation',
-    'ascension',
-    'activation',
-    'recalibration',
-    'remembrance',
-    'integration',
-    'channeling',
-    'embodiment',
-    'transmutation',
-    'reprogramming',
-    'downloading',
-    'upgrading',
-    'harmonizing',
-    'enlightenment',
-    'liberation',
-  ],
-  SETTING: [
-    'temple',
-    'portal',
-    'vortex',
-    'sanctuary',
-    'pyramid',
-    'monastery',
-    'ashram',
-    'wilderness',
-    'cave',
-    'yurt',
-    'tipi',
-    'dome',
-    'treehouse',
-    'hot-spring',
-    'medicine-wheel',
-    'crystal-grid',
-  ],
-} as const;
+const createWords = (texts: string[], category: RetreatWord['category']): RetreatWord[] =>
+  texts.map(text => ({
+    id: uuidv4(),
+    text,
+    category,
+  }));
 
-export function getWordsForCategory(category: WordCategory): RetreatWord[] {
-  return [...retreatWords[category]];
-} 
+export const activityWords = createWords([
+  'Yoga',
+  'Meditation',
+  'Dance',
+  'Breathwork',
+  'Tantra',
+  'Sound Bath',
+  'Ecstatic',
+  'Shamanic',
+  'Crystal',
+  'Cacao',
+], 'activity');
+
+export const styleWords = createWords([
+  'Nudist',
+  'Silent',
+  'Digital Nomad',
+  'Polyamorous',
+  'Crypto',
+  'Vegan',
+  'Raw Food',
+  'Mindful',
+  'Conscious',
+  'Sacred',
+], 'style');
+
+export const focusWords = createWords([
+  'Healing',
+  'Leadership',
+  'Transformation',
+  'Awakening',
+  'Integration',
+  'Manifestation',
+  'Alignment',
+  'Empowerment',
+  'Sobriety',
+  'Abundance',
+], 'focus');
+
+export const locationWords = createWords([
+  'Retreat',
+  'Journey',
+  'Experience',
+  'Intensive',
+  'Workshop',
+  'Circle',
+  'Ceremony',
+  'Safari',
+  'Pilgrimage',
+  'Camp',
+], 'location');
+
+export type WordCategory = 'activity' | 'style' | 'focus' | 'location';
+
+export const allWords: Record<WordCategory, RetreatWord[]> = {
+  activity: activityWords,
+  style: styleWords,
+  focus: focusWords,
+  location: locationWords,
+};
+
+export type { RetreatWord }; 
 

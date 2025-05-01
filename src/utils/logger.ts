@@ -1,54 +1,70 @@
 type LogLevel = 'debug' | 'info' | 'warn' | 'error';
 
-interface LogContext {
-  [key: string]: unknown;
+interface LogOptions {
+  level?: LogLevel;
+  context?: string;
+  data?: Record<string, unknown>;
+  [key: string]: unknown; // Allow any additional properties
 }
 
 class Logger {
-  private isDevelopment = import.meta.env.DEV;
+  private static instance: Logger;
+  private isDevelopment: boolean;
 
-  private formatMessage(level: LogLevel, message: string, context?: LogContext): string {
-    const timestamp = new Date().toISOString();
-    const contextString = context ? `\nContext: ${JSON.stringify(context, null, 2)}` : '';
-    return `[${timestamp}] [${level.toUpperCase()}] ${message}${contextString}`;
+  private constructor() {
+    this.isDevelopment = import.meta.env.DEV;
   }
 
-  private log(level: LogLevel, message: string, context?: LogContext) {
-    if (!this.isDevelopment) return;
+  static getInstance(): Logger {
+    if (!Logger.instance) {
+      Logger.instance = new Logger();
+    }
+    return Logger.instance;
+  }
 
-    const formattedMessage = this.formatMessage(level, message, context);
+  private formatMessage(message: string, options: LogOptions = {}): string {
+    const timestamp = new Date().toISOString();
+    const context = options.context ? `[${options.context}]` : '';
+    return `${timestamp} ${context} ${message}`;
+  }
+
+  private log(level: LogLevel, message: string, options: LogOptions = {}) {
+    if (!this.isDevelopment && level === 'debug') return;
+
+    const formattedMessage = this.formatMessage(message, options);
+    const logData = options.data ? { ...options.data } : undefined;
 
     switch (level) {
       case 'debug':
-        console.debug(formattedMessage);
+        console.debug(formattedMessage, logData);
         break;
       case 'info':
-        console.info(formattedMessage);
+        console.info(formattedMessage, logData);
         break;
       case 'warn':
-        console.warn(formattedMessage);
+        console.warn(formattedMessage, logData);
         break;
       case 'error':
-        console.error(formattedMessage);
+        console.error(formattedMessage, logData);
         break;
     }
   }
 
-  debug(message: string, context?: LogContext) {
-    this.log('debug', message, context);
+  debug(message: string, options?: LogOptions) {
+    this.log('debug', message, options);
   }
 
-  info(message: string, context?: LogContext) {
-    this.log('info', message, context);
+  info(message: string, options?: LogOptions) {
+    this.log('info', message, options);
   }
 
-  warn(message: string, context?: LogContext) {
-    this.log('warn', message, context);
+  warn(message: string, options?: LogOptions) {
+    this.log('warn', message, options);
   }
 
-  error(message: string, context?: LogContext) {
-    this.log('error', message, context);
+  error(message: string, options?: LogOptions) {
+    this.log('error', message, options);
   }
 }
 
-export const logger = new Logger(); 
+export const logger = Logger.getInstance(); 

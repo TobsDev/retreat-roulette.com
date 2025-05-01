@@ -1,15 +1,13 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Trash2, Heart } from 'lucide-react';
-import { cn } from '@/utils/cn';
-import { useAppStore } from '@/store/useAppStore';
+import { X } from 'lucide-react';
+import { useAppStore } from '../../store/useAppStore';
 
 interface SavedCombinationsProps {
-  className?: string;
-  onClose?: () => void;
+  onClose: () => void;
 }
 
-export function SavedCombinations({ className, onClose }: SavedCombinationsProps) {
+export const SavedCombinations: React.FC<SavedCombinationsProps> = ({ onClose }) => {
   const { savedCombinations, removeSavedCombination } = useAppStore();
 
   if (savedCombinations.length === 0) {
@@ -18,50 +16,41 @@ export function SavedCombinations({ className, onClose }: SavedCombinationsProps
 
   return (
     <motion.div
-      initial={{ height: 0, opacity: 0 }}
-      animate={{ height: 'auto', opacity: 1 }}
-      exit={{ height: 0, opacity: 0 }}
-      className={cn(
-        "w-full bg-purple-950/50 border border-yellow-400/30 rounded-lg p-4 mt-4",
-        "overflow-hidden",
-        className
-      )}
+      className="fixed inset-0 bg-black/50 flex items-center justify-center p-4"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
     >
-      <div className="flex items-center justify-between mb-2">
-        <h3 className="text-lg font-semibold">Saved Combinations</h3>
-        <button
-          onClick={onClose}
-          className="text-yellow-400/70 hover:text-yellow-400 transition-colors"
-        >
-          Hide
-        </button>
-      </div>
-      
-      <div className="space-y-2">
-        {savedCombinations.map((combo) => (
-          <motion.div
-            key={combo.id}
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: 20 }}
-            className="flex items-center justify-between p-2 bg-purple-950/30 rounded"
-          >
-            <div className="flex items-center gap-2">
-              <Heart size={16} className="text-yellow-400/70" />
-              <span>
-                {Object.values(combo.words).join('-')}
-              </span>
-            </div>
-            <button
-              onClick={() => removeSavedCombination(combo.id)}
-              className="text-yellow-400/50 hover:text-yellow-400 transition-colors"
-              aria-label="Remove saved combination"
+      <motion.div
+        className="bg-purple-800 rounded-lg p-6 w-full max-w-md"
+        initial={{ scale: 0.9, opacity: 0 }}
+        animate={{ scale: 1, opacity: 1 }}
+        exit={{ scale: 0.9, opacity: 0 }}
+      >
+        <div className="flex justify-between items-center mb-4">
+          <h2 className="text-xl font-bold">Saved Combinations</h2>
+          <button onClick={onClose}>
+            <X size={24} />
+          </button>
+        </div>
+        <div className="space-y-2">
+          {savedCombinations.map((combo, index) => (
+            <div
+              key={index}
+              className="flex justify-between items-center p-2 bg-purple-700 rounded"
             >
-              <Trash2 size={16} />
-            </button>
-          </motion.div>
-        ))}
-      </div>
+              <span>{Object.values(combo).join('-')}</span>
+              <button
+                className="text-red-400 hover:text-red-300"
+                onClick={() => removeSavedCombination(index.toString())}
+                aria-label="delete"
+              >
+                <X size={20} />
+              </button>
+            </div>
+          ))}
+        </div>
+      </motion.div>
     </motion.div>
   );
-} 
+}; 

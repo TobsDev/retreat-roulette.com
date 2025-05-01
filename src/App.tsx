@@ -1,25 +1,13 @@
-import React, { useEffect, useState } from 'react';
-import { AppLayout } from '@/components/layout/AppLayout';
-import { SlotMachine } from '@/components/features/SlotMachine';
-import { audioManager } from '@/utils/audio';
-import { logger } from '@/utils/logger';
-import type { WordCategory, RetreatWord } from '@/data/retreatWords';
+import React from 'react';
+import { AppLayout } from './components/layout/AppLayout';
+import { RetreatRoulette } from './components/RetreatRoulette';
+import { SavedCombinations } from './components/SavedCombinations';
 
-function App() {
-  const [currentCombination, setCurrentCombination] = useState<Record<WordCategory, RetreatWord> | undefined>();
-
-  useEffect(() => {
-    logger.info('App mounted');
-    audioManager.init().catch(error => {
-      logger.error('Failed to initialize audio', { error });
-    });
-  }, []);
-
+export const App: React.FC = () => {
   return (
-    <AppLayout currentCombination={currentCombination}>
-      <SlotMachine onCombinationChange={setCurrentCombination} />
+    <AppLayout>
+      <RetreatRoulette />
+      <SavedCombinations />
     </AppLayout>
   );
-}
-
-export default App; 
+}; 
