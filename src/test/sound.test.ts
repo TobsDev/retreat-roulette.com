@@ -2,6 +2,12 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { playSound, stopAllSounds } from '../utils/sound';
 import { logger } from '../utils/logger';
 
+type AudioContextMock = {
+  createGain: () => GainNode;
+  createOscillator: () => OscillatorNode;
+  destination: AudioDestinationNode;
+};
+
 // Mock Howler
 vi.mock('howler', () => ({
   Howl: vi.fn().mockImplementation(() => ({
@@ -18,8 +24,32 @@ vi.mock('../utils/logger', () => ({
   },
 }));
 
-describe('Sound Utilities', () => {
+describe('Sound System', () => {
+  let mockAudioContext: AudioContextMock;
+  let mockGainNode: GainNode;
+  let mockOscillator: OscillatorNode;
+
   beforeEach(() => {
+    mockGainNode = {
+      connect: vi.fn(),
+      disconnect: vi.fn(),
+      gain: { value: 0, setValueAtTime: vi.fn() },
+    } as unknown as GainNode;
+
+    mockOscillator = {
+      connect: vi.fn(),
+      disconnect: vi.fn(),
+      start: vi.fn(),
+      stop: vi.fn(),
+      frequency: { value: 0 },
+    } as unknown as OscillatorNode;
+
+    mockAudioContext = {
+      createGain: () => mockGainNode,
+      createOscillator: () => mockOscillator,
+      destination: {} as AudioDestinationNode,
+    };
+
     vi.clearAllMocks();
   });
 

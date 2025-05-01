@@ -1,8 +1,7 @@
 import React from 'react';
-import { render, screen, fireEvent } from '@testing-library/react';
-import { describe, it, expect, vi } from 'vitest';
+import { render, screen } from '@testing-library/react';
+import { describe, it, expect } from 'vitest';
 import { SlotMachine } from '../components/features/SlotMachine';
-import { allWords } from '../data/retreatWords';
 
 // Mock the retreat words
 vi.mock('../data/retreatWords', () => ({

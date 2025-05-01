@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Reel } from '../ui/Reel';
 import { allWords } from '../../data/retreatWords';
-import { RetreatWord, RetreatCategory } from '../../types/retreat';
+import { useRetreatStore } from '../../store/useRetreatStore';
+import type { RetreatWord } from '../../types/retreat';
 
 const CATEGORIES = ['activity', 'style', 'focus', 'location'] as const;
 type WordCategory = typeof CATEGORIES[number];

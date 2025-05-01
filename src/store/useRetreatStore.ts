@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import { v4 as uuidv4 } from 'uuid';
-import { RetreatRouletteState, RetreatWord, RetreatCombination } from '../types/retreat';
+import type { RetreatWord } from '../types/retreat';
 import { allWords } from '../data/retreatWords';
 import { logger } from '../utils/logger';
 

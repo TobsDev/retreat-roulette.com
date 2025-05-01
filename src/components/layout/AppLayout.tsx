@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
 import { Info } from 'lucide-react';
 import { ImprintModal } from '../ImprintModal';
 import { logger } from '../../utils/logger';

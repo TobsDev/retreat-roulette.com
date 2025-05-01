@@ -5,6 +5,7 @@ import { SavedCombinations } from '../components/SavedCombinations';
 import { useRetreatStore } from '../store/useRetreatStore';
 import { logger } from '../utils/logger';
 import * as soundModule from '../utils/sound';
+import type { RetreatStore } from '../store/useRetreatStore';
 
 vi.mock('../store/useRetreatStore');
 vi.mock('../utils/logger');
@@ -13,7 +14,7 @@ vi.mock('../utils/sound', () => ({
 }));
 
 describe('SavedCombinations', () => {
-  const mockStore = {
+  const mockStore: Partial<RetreatStore> = {
     savedCombinations: [
       {
         id: '1',
@@ -34,7 +35,7 @@ describe('SavedCombinations', () => {
 
   beforeEach(() => {
     vi.clearAllMocks();
-    (useRetreatStore as any).mockReturnValue(mockStore);
+    (useRetreatStore as unknown as ReturnType<typeof vi.fn>).mockReturnValue(mockStore);
     Object.defineProperty(global.navigator, 'clipboard', {
       value: { writeText: vi.fn().mockResolvedValue(undefined) },
       configurable: true,
@@ -119,7 +120,7 @@ describe('SavedCombinations', () => {
   });
 
   it('renders nothing when no combinations are saved', () => {
-    (useRetreatStore as any).mockReturnValue({
+    (useRetreatStore as unknown as ReturnType<typeof vi.fn>).mockReturnValue({
       ...mockStore,
       savedCombinations: [],
     });
