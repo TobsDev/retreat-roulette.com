@@ -5,6 +5,7 @@ import { RetreatRoulette } from '../components/RetreatRoulette';
 import { useRetreatStore } from '../store/useRetreatStore';
 import { logger } from '../utils/logger';
 import * as soundModule from '../utils/sound';
+import type { RetreatStore } from '../store/useRetreatStore';
 
 vi.mock('../store/useRetreatStore');
 vi.mock('../utils/logger');
@@ -22,7 +23,7 @@ vi.mock('../data/retreatWords', () => ({
 }));
 
 describe('RetreatRoulette', () => {
-  const mockStore = {
+  const mockStore: Partial<RetreatStore> = {
     reels: [
       { isSpinning: false, selectedWordIndex: 0 },
       { isSpinning: false, selectedWordIndex: 0 },
@@ -31,6 +32,7 @@ describe('RetreatRoulette', () => {
     ],
     isSpinning: false,
     soundEnabled: true,
+    savedCombinations: [],
     spin: vi.fn(),
     stopSpinning: vi.fn(),
     saveCombination: vi.fn(),
@@ -41,7 +43,7 @@ describe('RetreatRoulette', () => {
 
   beforeEach(() => {
     vi.clearAllMocks();
-    (useRetreatStore as any).mockReturnValue(mockStore);
+    (useRetreatStore as unknown as ReturnType<typeof vi.fn>).mockReturnValue(mockStore);
     Object.defineProperty(global.navigator, 'clipboard', {
       value: { writeText: vi.fn().mockResolvedValue(undefined) },
       configurable: true,
@@ -83,7 +85,7 @@ describe('RetreatRoulette', () => {
         isSpinning: index === 0,
       })),
     };
-    (useRetreatStore as any).mockReturnValue(spinningStore);
+    (useRetreatStore as unknown as ReturnType<typeof vi.fn>).mockReturnValue(spinningStore);
     render(<RetreatRoulette />);
     expect(screen.getByRole('button', { name: 'Spinning...' })).toBeDisabled();
   });

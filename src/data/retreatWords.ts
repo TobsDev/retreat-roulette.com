@@ -60,10 +60,14 @@ export const locationWords = createWords([
   'Camp',
 ], 'location');
 
-export const allWords = {
+export type WordCategory = 'activity' | 'style' | 'focus' | 'location';
+
+export const allWords: Record<WordCategory, RetreatWord[]> = {
   activity: activityWords,
   style: styleWords,
   focus: focusWords,
   location: locationWords,
-}; 
+};
+
+export type { RetreatWord }; 
 

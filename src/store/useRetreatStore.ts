@@ -5,13 +5,26 @@ import { RetreatRouletteState, RetreatWord, RetreatCombination } from '../types/
 import { allWords } from '../data/retreatWords';
 import { logger } from '../utils/logger';
 
-type RetreatStore = RetreatRouletteState & {
+export interface SavedCombination {
+  id: string;
+  words: RetreatWord[];
+  timestamp: number;
+}
+
+export interface RetreatStore {
+  reels: Array<{
+    isSpinning: boolean;
+    selectedWordIndex: number;
+  }>;
+  isSpinning: boolean;
+  soundEnabled: boolean;
+  savedCombinations: SavedCombination[];
   spin: () => void;
   stopSpinning: () => void;
   saveCombination: (words: RetreatWord[]) => void;
   deleteCombination: (id: string) => void;
   toggleSound: () => void;
-};
+}
 
 const INITIAL_STATE: RetreatRouletteState = {
   reels: Object.keys(allWords).map(() => ({
