@@ -1,25 +1,25 @@
 import React from 'react';
-import { motion, useMotionValue, useTransform } from 'framer-motion';
+import { motion, useMotionValue, useTransform, PanInfo } from 'framer-motion';
 import { cn } from '@/utils/cn';
 import { logger } from '@/utils/logger';
 
 export interface LeverProps {
   className?: string;
-  onPull?: () => void;
+  onPull: () => void;
   disabled?: boolean;
 }
 
-export function Lever({ className, onPull, disabled }: LeverProps) {
+export const Lever: React.FC<LeverProps> = ({ className, onPull, disabled = false }) => {
   const y = useMotionValue(0);
   const rotation = useTransform(y, [0, 100], [0, 45]);
   
-  const handleDragEnd = (event: any, info: any) => {
+  const handleDragEnd = (_: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
     if (disabled) return;
     
     logger.debug('Lever drag end', { offset: info.offset.y });
     
     if (info.offset.y > 50) {
-      onPull?.();
+      onPull();
     }
     
     y.set(0);
@@ -53,4 +53,4 @@ export function Lever({ className, onPull, disabled }: LeverProps) {
       />
     </motion.div>
   );
-} 
+}; 

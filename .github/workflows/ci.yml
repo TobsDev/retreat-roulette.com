@@ -19,14 +19,25 @@ jobs:
           node-version: '20'
           cache: 'npm'
           
+      - name: Cache dependencies
+        uses: actions/cache@v4
+        with:
+          path: |
+            node_modules
+            .next
+            .vite
+          key: ${{ runner.os }}-npm-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-npm-
+            
       - name: Install dependencies
         run: npm ci
         
       - name: Run linting
-        run: npm run lint || true # Making it non-blocking initially
+        run: npm run lint
         
       - name: Run type checking
-        run: npm run typecheck || true # Making it non-blocking initially
+        run: npm run typecheck
         
       - name: Run tests
-        run: npm run test || true # Making it non-blocking initially 
+        run: npm run test 
